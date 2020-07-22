@@ -3,6 +3,8 @@
 
 FROM ubuntu
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 MAINTAINER github.com/tstelzle
 
 # Update & Upgrade the ubuntu image
@@ -25,6 +27,9 @@ RUN cd /home/teeworlds/build && cmake .. && make
 # Create default config
 RUN touch /home/teeworlds/build/config.cfg
 RUN echo "sv_name docker_teeworlds\nsv_map dm1\nsv_scorelimit 20\nsv_timelimit 10\nsv_gametype dm\nsv_motd This is teeworlds running in docker.\nsv_max_clients 12" >> /home/teeworlds/build/config.cfg
+
+VOLUME /home/uploads
+COPY /home/uploads/config.cfg /home/teeworls/build
 
 EXPOSE 8303/udp
 USER 0
