@@ -24,12 +24,12 @@ RUN cd /home && git clone https://github.com/teeworlds/teeworlds --recurse-submo
 RUN cd /home/teeworlds && mkdir -p build
 RUN cd /home/teeworlds/build && cmake .. && make
 
-# Create default config
-RUN touch /home/teeworlds/build/config.cfg
-RUN echo "sv_name docker_teeworlds\nsv_map dm1\nsv_scorelimit 20\nsv_timelimit 10\nsv_gametype dm\nsv_motd This is teeworlds running in docker.\nsv_max_clients 12" >> /home/teeworlds/build/config.cfg
+# Make symbolic link to config.cfg
+RUN mkdir -p /home/uploads
+COPY config/config.cfg /home/uploads
+RUN ln -sf /home/uploads/config.cfg /home/teeworlds/build/config.cfg
 
 VOLUME /home/uploads
-COPY /home/uploads/config.cfg /home/teeworls/build
 
 EXPOSE 8303/udp
 USER 0
